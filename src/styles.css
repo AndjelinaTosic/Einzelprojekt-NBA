@@ -1,0 +1,79 @@
+:global(body) {
+  margin: 0;
+  padding: 0;
+  background-color: #a8cdee; /* Heller Blauton */
+  font-family: "Segoe UI", Roboto, sans-serif;
+  min-height: 100vh;
+  background-attachment: fixed;
+  color: #000000; /* Schwarze Schrift */
+}
+
+/* Allgemeine Containerbox */
+.hero {
+  background-color: #aea4a4; /* Hellgrau als Kontrastfläche */
+  border-radius: 1rem;
+  padding: 4rem 2rem;
+  margin-top: 4rem;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Orangefarbener Button */
+.btn-orange {
+  background-color: #f76c1d;
+  color: white;
+  border: none;
+  font-weight: bold;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.btn-orange:hover {
+  background-color: #d9560b;
+}
+
+/* Blauer Button */
+.btn-blue {
+  background-color: #1d3f72;
+  color: white;
+  border: none;
+  font-weight: bold;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.btn-blue:hover {
+  background-color: #16345f;
+}
+
+/* Weißer Button mit schwarzer Schrift */
+.btn-light {
+  background-color: white;
+  color: #000000;
+  border: 1px solid #ccc;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.btn-light:hover {
+  background-color: #f2f2f2;
+}
+
+/* Zentrierte Texte innerhalb von Hero */
+.hero h1,
+.hero p {
+  text-align: center;
+}
+
+/* Karten-Stil (z. B. für Spieleranzeige) */
+.card {
+  background-color: #ffffff;
+  border: 1px solid #d0d0d0;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+}
+
+.card-title {
+  color: #1d3f72; /* Dunkelblauer Titel */
+  font-weight: bold;
+}
+
+.card-text {
+  color: #000000;
+}
