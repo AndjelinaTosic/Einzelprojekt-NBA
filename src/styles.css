@@ -1,7 +1,7 @@
-:global(body) {
+body {
   margin: 0;
   padding: 0;
-  background-color: #a8cdee; /* Heller Blauton */
+  background-color: linear-gradient(to bottom, #1D428A 0%, #4e73c6 100%);
   font-family: "Segoe UI", Roboto, sans-serif;
   min-height: 100vh;
   background-attachment: fixed;
@@ -76,4 +76,53 @@
 
 .card-text {
   color: #000000;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Stelle sicher, dass die Karten gleich hoch sind */
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+/* Bild im oberen Bereich der Karte fix einpassen */
+.card img {
+  width: 100%;
+  height: 240px; /* Einheitliche Höhe für alle Bilder */
+  object-fit: cover; /* Bild wird beschnitten, aber nicht verzerrt */
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+.card img {
+  height: 260px;       /* Beispielhöhe – kannst du anpassen */
+  object-fit: cover;   /* Schneidet das Bild proportional, ohne Verzerrung */
+  border-radius: 0.5rem;
+}
+
+/* Hover-Effekt für Karten */
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Optional: Leichte Transparenz im Bild beim Hover */
+.card:hover img {
+  opacity: 0.95;
+  transition: opacity 0.2s ease;
+}
+.card:hover {
+  border-color: #1d3f72; /* Dein dunkelblauer Farbton */
+}
+
+.card-container {
+  perspective: 1000px;
+  width: 100%;
+  height: 100%;
 }
