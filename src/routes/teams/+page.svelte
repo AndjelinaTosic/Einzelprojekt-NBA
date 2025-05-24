@@ -5,7 +5,7 @@
 <!-- Navigationsleiste oben -->
 <div class="d-flex gap-3 mb-4">
   <a href="/" class="btn btn-blue">Home</a>
-  <button class="btn btn-light" on:click={() => history.back()}>Zurück</button>
+  <button class="btn btn-light" onclick={() => history.back()}>Zurück</button>
 </div>
 
 <h2 class="text-center fw-bold mb-4">🏀 Teamübersicht</h2>

@@ -1,20 +1,23 @@
+<!-- +page.svelte im Runes-Modus -->
 <script>
-  import { enhance } from "$app/forms"; // für sofortige Reaktion ohne Reload
+  import { enhance } from "$app/forms";
+  import { reactive } from "@sveltejs/runes";
 
-  const { data } = $props();
+  // Übergabe von Daten im Runes-Mode
+  export let data;
 
+  // Suchfeld (nicht unbedingt reaktiv, aber deklarativ)
   let search = "";
 
-  // Lokaler Zustand für Spieler
-  let players = structuredClone(data.players);
+  // Lokale, veränderbare Kopie der Spieler
+  const players = reactive(() => structuredClone(data.players));
 
- // Spieler aus der UI entfernen (sofort, ohne Reload)
+  // Spieler lokal entfernen (nach erfolgreichem DELETE)
   function removePlayer(id) {
-    console.log("Entferne Spieler mit ID:", id); // ← kannst du beobachten in DevTools
-    players = players.filter((p) => p._id !== id);
+    players.set(players().filter(p => p._id !== id));
   }
 
-  // Nach dem Erstellen neu laden (vereinfachte Variante – optional optimierbar)
+  // Seite neu laden nach erfolgreichem CREATE
   function reloadAfterCreate(result) {
     result.then(() => location.reload());
   }
@@ -31,11 +34,8 @@
   <button type="submit" class="btn btn-primary">Suchen</button>
 </form>
 
-<!-- Formular zum Erstellen eines neuen Spielers -->
-<!-- use:enhance = ermöglicht serverseitige Verarbeitung ohne Seiten-Reload -->
-<!-- reloadAfterCreate = Funktion, die Seite neu lädt, nachdem Spieler erfolgreich erstellt wurde -->
+<!-- Spieler erstellen -->
 <form method="POST" use:enhance={reloadAfterCreate} class="mb-4">
-  <!-- Eingabefeld für das Team des Spielers (Pflichtfeld) -->
   <input name="name" placeholder="Name" required />
   <input name="team" placeholder="Team" required />
   <input name="position" placeholder="Position" required />
@@ -47,81 +47,52 @@
   </button>
 </form>
 
-<!-- Navigation Buttons -->
+<!-- Navigation -->
 <div class="d-flex justify-content-start gap-3 mb-4">
   <a href="/" class="btn btn-outline-primary">Home</a>
-  <button class="btn btn-outline-secondary" on:click={() => history.back()}
-    >Zurück</button
-  >
+  <button class="btn btn-outline-secondary" on:click={() => history.back()}>Zurück</button>
 </div>
 
 <h2 class="text-center fw-bold mb-4">🏀 Spielerübersicht</h2>
 
-<!-- Grid für Spielerkarten -->
+<!-- Spieler-Karten -->
 <div class="row gx-4 gy-4">
-
-  <!--
-  Wir verwenden hier `players` (nicht `data.players`), weil wir mit einer 
-  lokal veränderbaren Kopie der Daten arbeiten. Diese Kopie wird aktualisiert,
-  z. B. wenn ein Spieler gelöscht wird.
-
-  Der Ausdruck `(player._id)` hilft Svelte dabei, jede Karte eindeutig 
-  zu identifizieren und effizient zu aktualisieren, ohne das ganze DOM neu zu rendern.
--->
-{#each players as player (player._id)}
-
+  {#each players() as player (player._id)}
     <div class="col-sm-6 col-md-4 col-lg-3">
       <div class="card h-100 shadow-sm">
         <div class="card-body">
           <h5 class="card-title">{player.Name}</h5>
           <p class="card-text">
-            <strong>Team:</strong>
-            {player.Team}<br />
-            <strong>Position:</strong>
-            {player.Position}<br />
-            <strong>Alter:</strong>
-            {player.Alter}<br />
-            <strong>Lebensstatus:</strong>
-            {player.Lebensstatus}
+            <strong>Team:</strong> {player.Team}<br />
+            <strong>Position:</strong> {player.Position}<br />
+            <strong>Alter:</strong> {player.Alter}<br />
+            <strong>Lebensstatus:</strong> {player.Lebensstatus}
           </p>
 
-          <!-- 🗑 Löschformular -->
-       <form
-  method="POST"
-  use:enhance={({ result }) =>
-    result.then((res) => {
-      if (res?.success) {
-        removePlayer(player._id);
-      }
-    })}
->
-  <input type="hidden" name="id" value={player._id} />
-  <button
-    type="submit"
-    name="intent"
-    value="delete"
-    class="btn btn-danger btn-sm mt-2"
-  >
-    Löschen
-  </button>
-</form>
-
-
+          <!-- Delete-Formular mit Sofort-Reaktion -->
+          <form
+            method="POST"
+            use:enhance={({ result }) => result.then((res) => {
+              if (res?.success) removePlayer(player._id);
+            })}
+          >
+            <input type="hidden" name="id" value={player._id} />
+            <button
+              type="submit"
+              name="intent"
+              value="delete"
+              class="btn btn-danger btn-sm mt-2"
+            >
+              Löschen
+            </button>
+          </form>
         </div>
 
-        <!-- Spielerbild mit Fallback -->
+        <!-- Bild mit Fallback -->
         {#if player.Image_url}
-          <img
-            src={player.Image_url}
-            alt={player.Name}
-            class="img-fluid rounded-bottom"
-          />
+          <img src={player.Image_url} alt={player.Name} class="img-fluid rounded-bottom" />
         {:else}
-          <img
-            src="/images/placeholder.jpg"
-            alt="Kein Bild vorhanden"
-            class="img-fluid rounded-bottom"
-          />
+          <img src="/images/placeholder.jpg" alt="Kein Bild vorhanden" class="img-fluid rounded-bottom" />
         {/if}
       </div>
     </div>
