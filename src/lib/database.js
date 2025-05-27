@@ -142,55 +142,56 @@ async function getTeam(id) {
 // BIOGRAFIE-FUNKTION
 //////////////////////////////////////////
 
-// Diese Funktion holt alle Spieler aus der Collection "Players"
-// und ergänzt sie mit Biografie-Informationen aus der Collection "BioPlayers"
-async function getPlayersWithBio() {
+export async function getBioByName(name) {
+  const bio = await db.collection("BioPlayers").findOne({
+    Name: { $regex: new RegExp(`^${name}$`, "i") }
+  });
+  return bio;
+}
+
+
+//////////////////////////////////////////
+// SCHEDULE
+//////////////////////////////////////////
+
+async function getUpcomingGamesNBA() {
   try {
-    // Zugriff auf die beiden Collections
-    const playersCollection = db.collection("Players");
-    const bioCollection = db.collection("BioPlayers");
+    const now = new Date();
 
-    // Alle Spieler aus der Datenbank abrufen
-    const players = await playersCollection.find({}).toArray();
+    // Finde nur Spiele mit Datum ab jetzt
+    const raw = await db.collection("Schedule").find({}).toArray();
+    const allGames = raw.flatMap(doc => doc.leagueSchedule?.gameDates ?? []).flatMap(d => d.games ?? []);
+    const upcomingGames = allGames
 
-    // Für jeden Spieler versuchen, eine passende Biografie zu finden
-    for (let player of players) {
-      const bio = await bioCollection.findOne({ Name: player.Name });
+      .filter(g => new Date(g.gameDateUTC) >= now && g.gameStatus === 1)
+      .map(g => {
+        const homeCity = g.homeTeam?.teamCity || "";
+        const homeName = g.homeTeam?.teamName || "";
+        const awayCity = g.awayTeam?.teamCity || "";
+        const awayName = g.awayTeam?.teamName || "";
 
-      // Wenn eine Biografie existiert → übernehmen,
-      // sonst einen Standardtext verwenden
-      player.Biographie = bio?.Biographie || "Keine Biografie verfügbar";
+        return {
+          Heimteam: (homeCity || homeName) ? `${homeCity} ${homeName}`.trim() : "Noch nicht bekannt",
+          Auswärtsteam: (awayCity || awayName) ? `${awayCity} ${awayName}`.trim() : "Noch nicht bekannt",
+          Datum: g.gameDateUTC,
+          Ort: g.arenaName ? `${g.arenaName} (${g.arenaCity})` : "Ort noch unbekannt",
+          Status: g.gameStatusText || ""
 
-      // MongoDB-IDs in Strings umwandeln für Svelte-Kompatibilität
-      player._id = player._id.toString();
-    }
-
-    // Spieler mit zugehöriger Biografie zurückgeben
-    return players;
+        };
+      });
+    return upcomingGames;
 
   } catch (error) {
-    // Bei einem Fehler leere Liste zurückgeben und Fehler melden
-    console.error("Fehler bei getPlayersWithBio:", error.message);
+    console.error("Fehler beim Abrufen der NBA-Spiele:", error.message);
     return [];
   }
 }
 
 
-// Sucht Spieler nach Name (Teil-Suche, nicht Case-Sensitive)
-async function searchPlayersByName(name) {
-  try {
-    const collection = db.collection("Players");
-    const query = {
-      Name: { $regex: new RegExp(name, "i") } // "i" = ignore case
-    };
-    const players = await collection.find(query).toArray();
-    players.forEach(p => p._id = p._id.toString());
-    return players;
-  } catch (error) {
-    console.log("Fehler bei searchPlayersByName:", error.message);
-    return [];
-  }
-}
+
+
+
+
 
 
 //////////////////////////////////////////
@@ -205,6 +206,6 @@ export default {
   deletePlayer,
   getTeams,
   getTeam,
-  getPlayersWithBio,
-  searchPlayersByName  
+  getBioByName,
+  getUpcomingGamesNBA
 };

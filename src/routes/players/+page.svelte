@@ -1,98 +1,105 @@
-<!-- +page.svelte im Runes-Modus -->
 <script>
   import { enhance } from "$app/forms";
-  import { reactive } from "@sveltejs/runes";
+  let { data } = $props();
+  const players = data.players;
 
-  // Übergabe von Daten im Runes-Mode
-  export let data;
+  let search = $state(""); 
+  let selectedPosition = $state("Alle");
+  let selectedTeam = $state("Alle");
+  let selectedStatus = $state("Alle");
 
-  // Suchfeld (nicht unbedingt reaktiv, aber deklarativ)
-  let search = "";
-
-  // Lokale, veränderbare Kopie der Spieler
-  const players = reactive(() => structuredClone(data.players));
-
-  // Spieler lokal entfernen (nach erfolgreichem DELETE)
-  function removePlayer(id) {
-    players.set(players().filter(p => p._id !== id));
-  }
-
-  // Seite neu laden nach erfolgreichem CREATE
-  function reloadAfterCreate(result) {
-    result.then(() => location.reload());
-  }
+// Hilfsfunktionen: Alle einzigartigen Werte aus Daten extrahieren
+  const unique = (array, key) => [...new Set(array.map(p => p[key]))];
+  const positions = ["Alle", ...unique(players, "Position")];
+  const teams = ["Alle", ...unique(players, "Team")];
+  const statuses = ["Alle", ...unique(players, "Lebensstatus")];
 </script>
 
-<form method="GET" class="mb-4 d-flex gap-2">
+
+<!-- Suchfeld zum Filtern -->
+<div class="mb-3">
   <input
     type="text"
-    name="q"
     bind:value={search}
-    placeholder="Spieler suchen..."
+    placeholder="🔍 Name suchen..."
     class="form-control"
   />
-  <button type="submit" class="btn btn-primary">Suchen</button>
-</form>
+</div>
 
-<!-- Spieler erstellen -->
-<form method="POST" use:enhance={reloadAfterCreate} class="mb-4">
-  <input name="name" placeholder="Name" required />
-  <input name="team" placeholder="Team" required />
-  <input name="position" placeholder="Position" required />
-  <input name="age" type="number" placeholder="Alter" required />
-  <input name="status" placeholder="Lebensstatus" required />
-  <input name="image_url" placeholder="Bild-URL (optional)" />
-  <button name="intent" value="create" type="submit" class="btn btn-success">
-    Spieler erstellen
-  </button>
-</form>
+<!-- 🔘 Filter Dropdowns -->
+<div class="d-flex gap-3 mb-4 flex-wrap">
+  <select bind:value={selectedPosition} class="form-select">
+    {#each positions as pos}
+      <option value={pos}>{pos}</option>
+    {/each}
+  </select>
 
-<!-- Navigation -->
+  <select bind:value={selectedTeam} class="form-select">
+    {#each teams as team}
+      <option value={team}>{team}</option>
+    {/each}
+  </select>
+
+  <select bind:value={selectedStatus} class="form-select">
+    {#each statuses as status}
+      <option value={status}>{status}</option>
+    {/each}
+  </select>
+</div>
+<a href="/players/create" class="btn btn-success mb-4">
+  ➕ Spieler erstellen
+</a>
+<!-- Navigation  home und zurück button-->
 <div class="d-flex justify-content-start gap-3 mb-4">
   <a href="/" class="btn btn-outline-primary">Home</a>
-  <button class="btn btn-outline-secondary" on:click={() => history.back()}>Zurück</button>
+  <button class="btn btn-outline-secondary" onclick={() => history.back()}
+    >Zurück</button
+  >
 </div>
 
 <h2 class="text-center fw-bold mb-4">🏀 Spielerübersicht</h2>
 
 <!-- Spieler-Karten -->
 <div class="row gx-4 gy-4">
-  {#each players() as player (player._id)}
+  {#each players.filter(p =>
+  p.Name.toLowerCase().includes(search.toLowerCase()) &&
+  (selectedPosition === "Alle" || p.Position === selectedPosition) &&
+  (selectedTeam === "Alle" || p.Team === selectedTeam) &&
+  (selectedStatus === "Alle" || p.Lebensstatus === selectedStatus)
+) as player (player._id)}
     <div class="col-sm-6 col-md-4 col-lg-3">
       <div class="card h-100 shadow-sm">
         <div class="card-body">
           <h5 class="card-title">{player.Name}</h5>
           <p class="card-text">
-            <strong>Team:</strong> {player.Team}<br />
-            <strong>Position:</strong> {player.Position}<br />
-            <strong>Alter:</strong> {player.Alter}<br />
-            <strong>Lebensstatus:</strong> {player.Lebensstatus}
+            <strong>Team:</strong>
+            {player.Team}<br />
+            <strong>Position:</strong>
+            {player.Position}<br />
+            <strong>Alter:</strong>
+            {player.Alter}<br />
+            <strong>Lebensstatus:</strong>
+            {player.Lebensstatus}
           </p>
-
-          <!-- Delete-Formular mit Sofort-Reaktion -->
-          <form
-            method="POST"
-            use:enhance={({ result }) => result.then((res) => {
-              if (res?.success) removePlayer(player._id);
-            })}
-          >
-            <input type="hidden" name="id" value={player._id} />
-            <button
-              type="submit"
-              name="intent"
-              value="delete"
-              class="btn btn-danger btn-sm mt-2"
-            >
-              Löschen
-            </button>
-          </form>
+          <!-- Innerhalb der Card-Body: Details-Button -->
+<a href={`/players/${player._id}`} class="btn btn-outline-info btn-sm mt-2">
+  Details ansehen
+</a>
         </div>
 
         <!-- Bild mit Fallback -->
         {#if player.Image_url}
-          <img src={player.Image_url} alt={player.Name} class="img-fluid rounded-bottom" />
+          <img
+            src={player.Image_url}
+            alt={player.Name}
+            class="img-fluid rounded-bottom"
+          />
         {:else}
-          <img src="/images/placeholder.jpg" alt="Kein Bild vorhanden" class="img-fluid rounded-bottom" />
+          <img
+            src="/images/Ebene.png"
+            alt="Kein Bild vorhanden"
+            class="img-fluid rounded-bottom"
+          />
         {/if}
       </div>
     </div>
