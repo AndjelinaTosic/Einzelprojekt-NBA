@@ -116,7 +116,7 @@ async function getTeams() {
       team._id = team._id.toString();
     });
   } catch (error) {
-    console.log("Fehler beim Abrufen der Teams:", error.message);
+    console.log("Es gibt einen Fehler beim Abrufen der Teams:", error.message);
   }
   return teams;
 }
