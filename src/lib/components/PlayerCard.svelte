@@ -1,30 +1,27 @@
 <script>
-
-  let { player, selected = false, onSelect } = $props();
+  const { player } = $props();
 </script>
 
-<div
- class="card h-100 shadow-sm position-relative"
-  class:border-success={selected}
-  onclick={() => onSelect(player._id)}
-  role="button"
-  tabindex="0"
-  aria-pressed={selected}
->
-  {#if selected}
-    <span class="position-absolute top-0 end-0 badge bg-success m-2">✔</span>
+<div class="card h-100 border-0 shadow rounded-4 overflow-hidden" style="background: linear-gradient(to bottom right, #fdfbfb, #ebedee);">
+  <!-- Spielerbild -->
+  {#if player.Image_url}
+    <img src={player.Image_url} alt={player.Name} class="card-img-top object-fit-cover" style="height: 220px; object-fit: cover;" />
+  {:else}
+    <img src="/images/Ebene.png" alt="Kein Bild vorhanden" class="card-img-top object-fit-cover" style="height: 220px; object-fit: cover;" />
   {/if}
 
-  <img
-    src={player.Image_url || "/images/Ebene.png"}
-    alt={player.Name}
-    class="d-block mx-auto rounded mt-2"
-    style="height: 100px; width: 100px; object-fit: cover;"
-  />
+  <!-- Inhalt -->
+  <div class="card-body text-dark">
+    <h5 class="card-title fw-bold text-primary">{player.Name}</h5>
+    <ul class="list-unstyled small">
+      <li>🏀 <strong>Team:</strong> {player.Team}</li>
+      <li>🧍 <strong>Position:</strong> {player.Position}</li>
+      <li>🎂 <strong>Alter:</strong> {player.Alter}</li>
+      <li>🩺 <strong>Status:</strong> {player.Lebensstatus}</li>
+    </ul>
 
-  <div class="card-body text-center py-2">
-    <h6 class="card-title mb-1">{player.Name}</h6>
-    <p class="mb-1"><strong>Team:</strong> {player.Team}</p>
-    <p class="mb-1"><strong>Position:</strong> {player.Position}</p>
+    <a href={`/players/${player._id}`} class="btn btn-outline-primary w-100 mt-2 rounded-pill">
+      🔍 Details ansehen
+    </a>
   </div>
 </div>

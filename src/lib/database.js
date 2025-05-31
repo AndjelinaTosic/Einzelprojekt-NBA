@@ -154,43 +154,52 @@ export async function getBioByName(name) {
 // SCHEDULE
 //////////////////////////////////////////
 
+import { BALDONTLIE_API_KEY } from "$env/static/private";
+
 async function getUpcomingGamesNBA() {
-  try {
-    const now = new Date();
+  const now = new Date();
+  const start = now.toISOString().split("T")[0];
 
-    // Finde nur Spiele mit Datum ab jetzt
-    const raw = await db.collection("Schedule").find({}).toArray();
-    const allGames = raw.flatMap(doc => doc.leagueSchedule?.gameDates ?? []).flatMap(d => d.games ?? []);
-    const upcomingGames = allGames
+  const endDate = new Date();
+  endDate.setDate(now.getDate() + 7);
+  const end = endDate.toISOString().split("T")[0];
 
-      .filter(g => new Date(g.gameDateUTC) >= now && g.gameStatus === 1)
-      .map(g => {
-        const homeCity = g.homeTeam?.teamCity || "";
-        const homeName = g.homeTeam?.teamName || "";
-        const awayCity = g.awayTeam?.teamCity || "";
-        const awayName = g.awayTeam?.teamName || "";
+  const url = `https://api.balldontlie.io/v1/games?start_date=${start}&end_date=${end}&per_page=20`;
 
-        return {
-          Heimteam: (homeCity || homeName) ? `${homeCity} ${homeName}`.trim() : "Noch nicht bekannt",
-          Auswärtsteam: (awayCity || awayName) ? `${awayCity} ${awayName}`.trim() : "Noch nicht bekannt",
-          Datum: g.gameDateUTC,
-          Ort: g.arenaName ? `${g.arenaName} (${g.arenaCity})` : "Ort noch unbekannt",
-          Status: g.gameStatusText || ""
+  const res = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${BALDONTLIE_API_KEY}`,
+    },
+  });
 
-        };
-      });
-    return upcomingGames;
+  const json = await res.json();
 
-  } catch (error) {
-    console.error("Fehler beim Abrufen der NBA-Spiele:", error.message);
-    return [];
-  }
+  return json.data.map(g => ({
+    Heimteam: g.home_team.full_name,
+    Auswärtsteam: g.visitor_team.full_name,
+    Datum: g.date,
+    Ort: g.home_team.city,
+    Status: g.status || "Geplant",
+  }));
 }
 
+//////////////////////////////////////////
+// QUIZ
+//////////////////////////////////////////
 
+export async function getQuizByTeamname(teamname) {
+  const collection = db.collection("quizfragen");
+  const quiz = await collection
+    .find({ team: { $regex: new RegExp("^" + teamname + "$", "i") } })
+    .toArray();
 
+  // Fix: Alle _id in Strings umwandeln
+  quiz.forEach((q) => {
+    if (q._id) q._id = q._id.toString();
+  });
 
-
+  return quiz;
+}
 
 
 
@@ -207,5 +216,6 @@ export default {
   getTeams,
   getTeam,
   getBioByName,
-  getUpcomingGamesNBA
+  getUpcomingGamesNBA,
+  getQuizByTeamname
 };

@@ -1,26 +1,26 @@
-<div class="container">
-  <div class="hero text-center">
-    <h1 class="display-4 fw-bold mb-3">🏀 NBA Legends</h1>
+<div class="container py-5">
+  <div class="hero text-center shadow-lg p-5 rounded-4 bg-white">
+    <h1 class="display-3 fw-bold text-primary mb-4">🏀 NBA Legends</h1>
 
-    <p
-      class="text-uppercase mb-3"
-      style="letter-spacing: 1px; font-weight: 600;"
-    >
+    <p class="text-uppercase text-secondary fw-semibold mb-3" style="letter-spacing: 1px;">
       Die Geschichte der Spieler auf einen Blick
     </p>
 
-    <p class="lead mb-4 text-light">
-      Willkommen auf unserer Plattform. Schau dir die besten NBA-Spieler aller
-      Zeiten an. Entdecke Legenden, Superstars und historische Teams –
-      übersichtlich, klar und aktuell.
+    <p class="lead text-muted mb-5">
+      Willkommen auf unserer Plattform! Entdecke die besten NBA-Spieler aller Zeiten,
+      historische Teams und die aktuellsten Spielpläne – alles an einem Ort.
     </p>
 
-    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-4">
-      <a href="/players" class="btn btn-orange btn-lg px-4">Spieler entdecken</a
-      >
-      <a href="/teams" class="btn btn-blue btn-lg px-4">Teams anzeigen</a>
-      <a href="/schedule" class="btn btn-success">Spielplan ansehen</a>
-      <a href="/fantasy" class="btn btn-warning">Dein Fantasy-Team</a>
+    <div class="d-flex flex-column flex-sm-row justify-content-center gap-3">
+      <a href="/players" class="btn btn-orange btn-lg px-4">
+        👤 Spieler entdecken
+      </a>
+      <a href="/teams" class="btn btn-blue btn-lg px-4">
+        🏆 Teams anzeigen
+      </a>
+      <a href="/schedule" class="btn btn-success btn-lg px-4">
+        📅 Spielplan ansehen
+      </a>
     </div>
   </div>
 </div>

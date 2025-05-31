@@ -4,8 +4,8 @@ export default {
   kit: {
     adapter: adapter({
       edge: false,
-      split: false
+      split: false,
+      
     }),
-   
   }
 };

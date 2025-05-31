@@ -1,12 +1,13 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: linear-gradient(to bottom, #1D428A 0%, #4e73c6 100%);
+  background: linear-gradient(to bottom, hsla(220, 65%, 68%, 0.396) 0%, #4e73c6 100%);
   font-family: "Segoe UI", Roboto, sans-serif;
   min-height: 100vh;
   background-attachment: fixed;
-  color: #000000; /* Schwarze Schrift */
+  color: #000000;
 }
+
 
 /* Allgemeine Containerbox */
 .hero {

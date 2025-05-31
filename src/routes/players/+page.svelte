@@ -1,107 +1,107 @@
 <script>
   import { enhance } from "$app/forms";
+  import PlayerCard from "$lib/components/PlayerCard.svelte";
+
   let { data } = $props();
   const players = data.players;
 
-  let search = $state(""); 
-  let selectedPosition = $state("Alle");
-  let selectedTeam = $state("Alle");
-  let selectedStatus = $state("Alle");
+  let search = $state("");
+  let selectedPosition = $state("Position");
+  let selectedTeam = $state("Team");
+  let selectedStatus = $state("Lebensstatus");
 
-// Hilfsfunktionen: Alle einzigartigen Werte aus Daten extrahieren
   const unique = (array, key) => [...new Set(array.map(p => p[key]))];
-  const positions = ["Alle", ...unique(players, "Position")];
-  const teams = ["Alle", ...unique(players, "Team")];
-  const statuses = ["Alle", ...unique(players, "Lebensstatus")];
+  const positions = ["Position", ...unique(players, "Position")];
+  const teams = ["Team", ...unique(players, "Team")];
+  const statuses = ["Lebensstatus", ...unique(players, "Lebensstatus")];
 </script>
 
+<!-- Seite Container mit Top-Margin -->
+<div class="container mt-5">
 
-<!-- Suchfeld zum Filtern -->
-<div class="mb-3">
-  <input
-    type="text"
-    bind:value={search}
-    placeholder="🔍 Name suchen..."
-    class="form-control"
-  />
-</div>
+  <!-- 🔝 Navigation oben rechts -->
+  <div class="d-flex justify-content-end gap-2 mb-3">
+    <a href="/" class="btn btn-outline-primary">🏠 Home</a>
+    <button class="btn btn-outline-secondary" onclick={() => history.back()}>🔙 Zurück</button>
+  </div>
 
-<!-- 🔘 Filter Dropdowns -->
-<div class="d-flex gap-3 mb-4 flex-wrap">
-  <select bind:value={selectedPosition} class="form-select">
-    {#each positions as pos}
-      <option value={pos}>{pos}</option>
-    {/each}
-  </select>
+  <!-- 🧠 Filterüberschrift -->
+  <div class="mb-4">
+    <h4 class="fw-bold">🔎 Spieler filtern</h4>
+    <p class="text-muted">
+      Verwende die Filter, um Spieler nach Name, Position, Team oder Lebensstatus einzugrenzen.
+    </p>
+  </div>
 
-  <select bind:value={selectedTeam} class="form-select">
-    {#each teams as team}
-      <option value={team}>{team}</option>
-    {/each}
-  </select>
+  <!-- 🔍 Moderne Filterleiste -->
+  <div class="card shadow-sm p-4 mb-5 border-0 rounded-4" style="background: #f8f9fa;">
+    <div class="row gy-3 gx-4 align-items-center">
 
-  <select bind:value={selectedStatus} class="form-select">
-    {#each statuses as status}
-      <option value={status}>{status}</option>
-    {/each}
-  </select>
-</div>
-<a href="/players/create" class="btn btn-success mb-4">
-  ➕ Spieler erstellen
-</a>
-<!-- Navigation  home und zurück button-->
-<div class="d-flex justify-content-start gap-3 mb-4">
-  <a href="/" class="btn btn-outline-primary">Home</a>
-  <button class="btn btn-outline-secondary" onclick={() => history.back()}
-    >Zurück</button
-  >
-</div>
-
-<h2 class="text-center fw-bold mb-4">🏀 Spielerübersicht</h2>
-
-<!-- Spieler-Karten -->
-<div class="row gx-4 gy-4">
-  {#each players.filter(p =>
-  p.Name.toLowerCase().includes(search.toLowerCase()) &&
-  (selectedPosition === "Alle" || p.Position === selectedPosition) &&
-  (selectedTeam === "Alle" || p.Team === selectedTeam) &&
-  (selectedStatus === "Alle" || p.Lebensstatus === selectedStatus)
-) as player (player._id)}
-    <div class="col-sm-6 col-md-4 col-lg-3">
-      <div class="card h-100 shadow-sm">
-        <div class="card-body">
-          <h5 class="card-title">{player.Name}</h5>
-          <p class="card-text">
-            <strong>Team:</strong>
-            {player.Team}<br />
-            <strong>Position:</strong>
-            {player.Position}<br />
-            <strong>Alter:</strong>
-            {player.Alter}<br />
-            <strong>Lebensstatus:</strong>
-            {player.Lebensstatus}
-          </p>
-          <!-- Innerhalb der Card-Body: Details-Button -->
-<a href={`/players/${player._id}`} class="btn btn-outline-info btn-sm mt-2">
-  Details ansehen
-</a>
+      <!-- Suchfeld -->
+      <div class="col-md-3">
+        <div class="input-group">
+          <span class="input-group-text bg-white">🔍</span>
+          <input
+            type="text"
+            bind:value={search}
+            placeholder="Name suchen..."
+            class="form-control"
+          />
         </div>
-
-        <!-- Bild mit Fallback -->
-        {#if player.Image_url}
-          <img
-            src={player.Image_url}
-            alt={player.Name}
-            class="img-fluid rounded-bottom"
-          />
-        {:else}
-          <img
-            src="/images/Ebene.png"
-            alt="Kein Bild vorhanden"
-            class="img-fluid rounded-bottom"
-          />
-        {/if}
       </div>
+
+      <!-- Position Filter -->
+      <div class="col-md-3">
+        <select bind:value={selectedPosition} class="form-select">
+          {#each positions as pos}
+            <option value={pos}>{pos}</option>
+          {/each}
+        </select>
+      </div>
+
+      <!-- Team Filter -->
+      <div class="col-md-3">
+        <select bind:value={selectedTeam} class="form-select">
+          {#each teams as team}
+            <option value={team}>{team}</option>
+          {/each}
+        </select>
+      </div>
+
+      <!-- Lebensstatus Filter -->
+      <div class="col-md-3">
+        <select bind:value={selectedStatus} class="form-select">
+          {#each statuses as status}
+            <option value={status}>{status}</option>
+          {/each}
+        </select>
+      </div>
+
     </div>
-  {/each}
+  </div>
+
+  <!-- ➕ Spieler erstellen Button & Beschreibung -->
+  <div class="mb-4">
+    <a href="/players/create" class="btn btn-success">➕ Spieler erstellen</a>
+    <p class="text-muted mt-2">
+      Du kannst hier einen neuen Spieler mit allen relevanten Informationen zur Datenbank hinzufügen.
+    </p>
+  </div>
+
+  <!-- Titel -->
+  <h2 class="text-center fw-bold mb-4">🏀 Spielerübersicht</h2>
+
+  <!-- Spieler-Karten -->
+  <div class="row gx-4 gy-4">
+    {#each players.filter(p =>
+      p.Name.toLowerCase().includes(search.toLowerCase()) &&
+      (selectedPosition === "Position" || p.Position === selectedPosition) &&
+      (selectedTeam === "Team" || p.Team === selectedTeam) &&
+      (selectedStatus === "Lebensstatus" || p.Lebensstatus === selectedStatus)
+    ) as player (player._id)}
+      <div class="col-sm-6 col-md-4 col-lg-3">
+        <PlayerCard {player} />
+      </div>
+    {/each}
+  </div>
 </div>
