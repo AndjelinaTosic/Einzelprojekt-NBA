@@ -28,14 +28,14 @@
   }
 </script>
 <!-- Navigationsleiste oben -->
-<div class="d-flex gap-3 mb-4">
-  <a href="/" class="btn btn-primary">🏠 Home</a>
-  <button class="btn btn-secondary" onclick={() => history.back()}>🔙 Zurück</button>
+<!-- Zurück-Button rechts oben -->
+<div class="text-end mt-4 mb-2">
+  <button class="btn btn-outline-secondary" onclick={() => history.back()}>Zurück</button>
 </div>
 
 
 <!-- Titel -->
-<h2 class="text-center fw-bold my-4">🏀 Kommende NBA-Spiele</h2>
+<h2 class="text-center fw-bold my-4">🏀 Kommende NBA-Spiele 🏀</h2>
 
 <!-- 🎥 Großes Video -->
 <div class="d-flex justify-content-center mb-4">

@@ -1,6 +1,5 @@
 <script>
-  export let player;
-  export let bio;
+  let { player, bio } = $props();
 </script>
 
 <!-- 🧾 Spielerprofil -->

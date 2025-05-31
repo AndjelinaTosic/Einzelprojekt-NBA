@@ -7,7 +7,7 @@
   <button
     class="navbar-toggler"
     type="button"
-    on:click={() => (open = !open)}
+    onclick={() => (open = !open)}
     aria-controls="navbarNav"
     aria-expanded={open}
     aria-label="Toggle navigation"
@@ -17,6 +17,9 @@
 
   <div class={"collapse navbar-collapse" + (open ? " show" : "")} id="navbarNav">
     <ul class="navbar-nav ms-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/">Home</a>
+      </li>
       <li class="nav-item">
         <a class="nav-link" href="/players">Spieler</a>
       </li>

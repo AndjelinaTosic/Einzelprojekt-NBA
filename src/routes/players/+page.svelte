@@ -21,8 +21,7 @@
 
   <!-- 🔝 Navigation oben rechts -->
   <div class="d-flex justify-content-end gap-2 mb-3">
-    <a href="/" class="btn btn-outline-primary">🏠 Home</a>
-    <button class="btn btn-outline-secondary" onclick={() => history.back()}>🔙 Zurück</button>
+    <button class="btn btn-outline-secondary" onclick={() => history.back()}>Zurück</button>
   </div>
 
   <!-- 🧠 Filterüberschrift -->
@@ -82,14 +81,14 @@
 
   <!-- ➕ Spieler erstellen Button & Beschreibung -->
   <div class="mb-4">
-    <a href="/players/create" class="btn btn-success">➕ Spieler erstellen</a>
+    <a href="/players/create" class="btn btn-success"> Spieler erstellen</a>
     <p class="text-muted mt-2">
       Du kannst hier einen neuen Spieler mit allen relevanten Informationen zur Datenbank hinzufügen.
     </p>
   </div>
 
   <!-- Titel -->
-  <h2 class="text-center fw-bold mb-4">🏀 Spielerübersicht</h2>
+  <h2 class="text-center fw-bold mb-4">🏀 Spielerübersicht 🏀</h2>
 
   <!-- Spieler-Karten -->
   <div class="row gx-4 gy-4">

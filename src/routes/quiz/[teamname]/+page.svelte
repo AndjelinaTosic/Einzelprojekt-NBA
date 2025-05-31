@@ -31,12 +31,11 @@
 
   <!-- 🔝 Navigation oben rechts -->
   <div class="d-flex justify-content-end gap-3 mb-4">
-    <a href="/" class="btn btn-outline-primary">🏠 Home</a>
-    <a href="/teams" class="btn btn-outline-secondary">🔙 Zurück zu Teams</a>
+    <a href="/teams" class="btn btn-outline-secondary">Zurück zu Teams</a>
   </div>
 
   <!-- 🎯 Titel -->
-  <h2 class="text-center fw-bold mb-4">🧠 Quiz über {data.team.Team}</h2>
+  <h2 class="text-center fw-bold mb-4">Quiz über {data.team.Team}</h2>
 
   {#if !finished}
     <div class="card shadow-sm border-0 p-4 rounded-4 bg-light-subtle">

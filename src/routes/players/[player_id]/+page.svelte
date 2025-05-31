@@ -14,7 +14,7 @@
 
 <!-- 🔘 Aktionen -->
 <div class="container mb-5 d-flex flex-wrap gap-3">
-  <a href="/players" class="btn btn-outline-primary">🔙 Zurück zur Übersicht</a>
+  <a href="/players" class="btn btn-outline-primary">Zurück zur Übersicht</a>
 
   <form method="POST" action="?/delete" class="d-inline">
     <button

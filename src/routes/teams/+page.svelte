@@ -8,12 +8,11 @@
 
   <!-- 🔝 Navigation oben rechts -->
   <div class="d-flex justify-content-end gap-3 mb-4">
-    <a href="/" class="btn btn-outline-primary">🏠 Home</a>
-    <button class="btn btn-outline-secondary" onclick={() => history.back()}>🔙 Zurück</button>
+    <button class="btn btn-outline-secondary" onclick={() => history.back()}>Zurück</button>
   </div>
 
   <!-- 🏀 Titel -->
-  <h2 class="text-center fw-bold mb-5">🏀 Teamübersicht</h2>
+  <h2 class="text-center fw-bold mb-5">🏀 Teamübersicht 🏀</h2>
 
   <!-- 🧱 Karten-Grid -->
   <div class="row gx-4 gy-4">

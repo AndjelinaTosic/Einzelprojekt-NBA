@@ -1,22 +1,21 @@
 <script>
   import { enhance } from "$app/forms";
+
+  // Runes-Modus: keine bind:value notwendig für einfaches HTML-Formular
 </script>
 
-<!-- Seitencontainer mit Abstand -->
 <div class="container py-5">
-
-  <!-- Titel und Einführung -->
+  <!-- Titel -->
   <div class="mb-4">
-    <h2 class="fw-bold text-primary"> Neuen Spieler hinzufügen</h2>
+    <h2 class="fw-bold text-primary">Neuen Spieler hinzufügen</h2>
     <p class="text-muted">
       Fülle die Felder aus, um einen neuen NBA-Spieler zur Datenbank hinzuzufügen.
     </p>
   </div>
 
-  <!-- Formular-Box -->
+  <!-- Formular -->
   <form method="POST" use:enhance class="card shadow-sm p-4 border-0 bg-light rounded-4">
     <div class="row g-4">
-
       <!-- Name -->
       <div class="col-md-6">
         <label class="form-label fw-semibold">👤 Name</label>

@@ -1,5 +1,5 @@
 <script>
-  export let team;
+  let { team } = $props();
 </script>
 
 <div class="card h-100 shadow-sm border-0">
