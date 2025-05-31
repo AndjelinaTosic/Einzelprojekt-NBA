@@ -58,8 +58,8 @@
 
     <!-- Buttons -->
     <div class="mt-4 d-flex gap-3">
-      <button type="submit" class="btn btn-success">✅ Spieler erstellen</button>
-      <a href="/players" class="btn btn-outline-secondary">🔙 Zurück</a>
+      <button type="submit" class="btn btn-success">Spieler erstellen</button>
+      <a href="/players" class="btn btn-outline-secondary">Zurück</a>
     </div>
   </form>
 </div>

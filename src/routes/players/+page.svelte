@@ -26,7 +26,7 @@
 
   <!-- 🧠 Filterüberschrift -->
   <div class="mb-4">
-    <h4 class="fw-bold">🔎 Spieler filtern</h4>
+    <h4 class="fw-bold">Spieler filtern</h4>
     <p class="text-muted">
       Verwende die Filter, um Spieler nach Name, Position, Team oder Lebensstatus einzugrenzen.
     </p>
