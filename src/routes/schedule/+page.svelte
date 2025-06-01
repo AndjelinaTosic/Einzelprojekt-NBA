@@ -27,18 +27,41 @@
     });
   }
 </script>
-<!-- Navigationsleiste oben -->
-<!-- Zurück-Button rechts oben -->
+
+<!--  Zurück-Button -->
 <div class="text-end mt-4 mb-2">
   <button class="btn btn-outline-secondary" onclick={() => history.back()}>Zurück</button>
 </div>
 
-
-<!-- Titel -->
+<!--  Titel -->
 <h2 class="text-center fw-bold my-4">🏀 Kommende NBA-Spiele 🏀</h2>
 
-<!-- 🎥 Großes Video -->
-<div class="d-flex justify-content-center mb-4">
+<!-- 📅 Spielkarten zentriert -->
+{#if loading}
+  <p class="text-center">⏳ Lade Spiele...</p>
+{:else if games.length === 0}
+  <p class="text-center text-muted">❌ Keine Spiele gefunden.</p>
+{:else}
+  <div class="d-flex flex-wrap justify-content-center gap-4 mb-5">
+    {#each games as game}
+      <div class="card shadow-sm border-0" style="width: 22rem;">
+        <div class="card-body">
+          <h5 class="card-title text-primary">
+             {game.Heimteam} <span class="text-muted">vs</span> {game.Auswärtsteam}
+          </h5>
+          <ul class="list-unstyled mt-3 mb-0">
+            <li>📅 <strong>Datum:</strong> {formatDate(game.Datum)}</li>
+            <li>⏰ <strong>Zeit:</strong> {formatTime(game.Datum)}</li>
+            <li>📍 <strong>Ort:</strong> {game.Ort}</li>
+          </ul>
+        </div>
+      </div>
+    {/each}
+  </div>
+{/if}
+
+<!-- 🎥 Video unten -->
+<div class="d-flex justify-content-center mb-5">
   <div style="width: 1350px; max-width: 100%;">
     <div class="ratio ratio-16x9">
       <iframe
@@ -50,30 +73,3 @@
     </div>
   </div>
 </div>
-
-
-
-{#if loading}
-  <p class="text-center">⏳ Lade Spiele...</p>
-{:else if games.length === 0}
-  <p class="text-center text-muted">❌ Keine Spiele gefunden.</p>
-{:else}
-  <div class="row g-4">
-    {#each games as game}
-      <div class="col-md-6 col-lg-4">
-        <div class="card shadow-sm border-0 h-100">
-          <div class="card-body">
-            <h5 class="card-title text-primary">
-              🏆 {game.Heimteam} <span class="text-muted">vs</span> {game.Auswärtsteam}
-            </h5>
-            <ul class="list-unstyled mt-3 mb-0">
-              <li>📅 <strong>Datum:</strong> {formatDate(game.Datum)}</li>
-              <li>⏰ <strong>Zeit:</strong> {formatTime(game.Datum)}</li>
-              <li>📍 <strong>Ort:</strong> {game.Ort}</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    {/each}
-  </div>
-{/if}
