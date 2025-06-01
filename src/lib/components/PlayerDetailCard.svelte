@@ -38,7 +38,7 @@
     <!-- Karte mit Spielerinformationen (Team, Position, Alter, Status) -->
     <div class="card shadow-sm border-0 rounded-4 p-4">
       
-      // Überschrift für den Detailbereich
+            <!--Überschrift für den Detailbereichn -->
       <h4 class="text-dark fw-semibold mb-3">Spielerdetails</h4>
 
      <!--Auflistung der einzelnen Informationen -->
