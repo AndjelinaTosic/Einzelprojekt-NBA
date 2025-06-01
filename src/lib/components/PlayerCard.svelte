@@ -14,10 +14,10 @@
   <div class="card-body text-dark">
     <h5 class="card-title fw-bold text-primary">{player.Name}</h5>
     <ul class="list-unstyled small">
-      <li>🏀 <strong>Team:</strong> {player.Team}</li>
-      <li>🧍 <strong>Position:</strong> {player.Position}</li>
-      <li>🎂 <strong>Alter:</strong> {player.Alter}</li>
-      <li>🩺 <strong>Status:</strong> {player.Lebensstatus}</li>
+      <li><strong>Team:</strong> {player.Team}</li>
+      <li><strong>Position:</strong> {player.Position}</li>
+      <li><strong>Alter:</strong> {player.Alter}</li>
+      <li><strong>Status:</strong> {player.Lebensstatus}</li>
     </ul>
 
     <a href={`/players/${player._id}`} class="btn btn-outline-primary w-100 mt-2 rounded-pill">

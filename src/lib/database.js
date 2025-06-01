@@ -161,7 +161,7 @@ async function getUpcomingGamesNBA() {
   const start = now.toISOString().split("T")[0];
 
   const endDate = new Date();
-  endDate.setDate(now.getDate() +30 );
+  endDate.setDate(now.getDate() +20 );
   const end = endDate.toISOString().split("T")[0];
 
   const url = `https://api.balldontlie.io/v1/games?start_date=${start}&end_date=${end}&per_page=20`;
